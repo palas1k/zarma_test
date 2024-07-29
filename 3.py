@@ -13,4 +13,4 @@ import pandas as pd
 products = pd.read_csv('products.csv', sep=';')
 sales = pd.read_json('sales.json')
 result = pd.merge(products, sales, on='product_id').set_index('product_id')
-result.to_csv('result.csv')
+result.to_csv('3_result.csv')
