@@ -6,23 +6,35 @@
 https://jsonplaceholder.typicode.com/posts.
 Сохраните полученные данные в формате JSON в файл.
 """
+import json
 
 import requests
+from requests import Response
 
 
-class PostHandlers:
-    def __init__(self, url: str):
-        self.url = url
+class PostRequest:
+    @staticmethod
+    def get_response(url: str, request_manager=requests) -> Response:
+        try:
+            response = request_manager.get(url)
+            return response
+        except Exception as e:
+            raise e
+
+
+class PostSave:
 
     @staticmethod
-    def _save_in_json(post: str) -> None:
+    def _get_data(url: str) -> json:
+        post_request = PostRequest()
+        resp = post_request.get_response(url)
+        return resp.text
+
+    def get_by_url_and_save_in_json(self, url) -> None:
+        data = self._get_data(url)
         with open('1_response.json', 'w') as file:
-            file.write(post)
-
-    def save_posts(self):
-        response = requests.get(self.url)
-        return self._save_in_json(response.text)
+            file.write(data)
 
 
-post = PostHandlers('https://jsonplaceholder.typicode.com/posts/')
-post.save_posts()
+post_save = PostSave()
+post_save.get_by_url_and_save_in_json('https://jsonplaceholder.typicode.com/posts')
